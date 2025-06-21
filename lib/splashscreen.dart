@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:park_wise/home.dart';
 import 'package:park_wise/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
@@ -13,17 +15,27 @@ class _SplashscreenState extends State<Splashscreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 1), () {
-      setState(() {
-        opacity = 1.0;
-      });
-    });
-    Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Login()),
-      );
-    });
+    _startSplashFlow();
+  }
+
+  Future<void> _startSplashFlow() async {
+    setState(() => opacity = 1.0);
+
+    await Future.delayed(const Duration(seconds: 2));
+
+    // Read login status
+    final prefs = await SharedPreferences.getInstance();
+    final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+
+    if (!mounted) return;
+
+    // Navigate
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => isLoggedIn ? const Home() : const Login(),
+      ),
+    );
   }
 
   @override
