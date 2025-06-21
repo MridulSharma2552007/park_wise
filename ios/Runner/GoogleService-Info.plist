@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>535332086494-6duei33h2ub6nvaoto0qujriv72jj45c.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.535332086494-6duei33h2ub6nvaoto0qujriv72jj45c</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>535332086494-13gi6ejt687jpjk2sp5mi85t8urdj82j.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBhLG1YbFn34uggg7nu0R3_SjKKOss1Npg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>535332086494</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.parkWise</string>
+	<key>PROJECT_ID</key>
+	<string>parkwise-a53f9</string>
+	<key>STORAGE_BUCKET</key>
+	<string>parkwise-a53f9.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:535332086494:ios:62e90dcd5c934fce71984f</string>
+</dict>
+</plist>

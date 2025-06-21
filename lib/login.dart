@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:park_wise/element/logincontainer.dart';
+import 'package:park_wise/home.dart';
 import 'package:video_player/video_player.dart';
 
 class Login extends StatefulWidget {
@@ -26,6 +29,26 @@ class _LoginState extends State<Login> {
       });
   }
 
+  Future<UserCredential?> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) {
+        return null;
+      }
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } catch (e) {
+      print("Google sign in error $e");
+      return null;
+    }
+  }
+
   @override
   void dispose() {
     _controller.dispose();
@@ -48,7 +71,18 @@ class _LoginState extends State<Login> {
                   bottom: 40,
                   left: 10,
                   right: 10,
-                  child: Logincontainer(),
+                  child: GestureDetector(
+                    onTap: () async {
+                      final user = await signInWithGoogle();
+                      if (user != null) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => Home()),
+                        );
+                      }
+                    },
+                    child: Logincontainer(),
+                  ),
                 ),
               ],
             )
