@@ -116,10 +116,10 @@ class _HomeState extends State<Home> {
                         markers.add(
                           Marker(
                             point: LatLng(_carlat!, _carlon!),
-                            child: const Icon(
-                              Icons.directions_car,
-                              color: Colors.blue,
-                              size: 30,
+                            child: Image.asset(
+                              'assets/images/carparking.png',
+                              height: 20,
+                              width: 20,
                             ),
                           ),
                         );
@@ -136,7 +136,7 @@ class _HomeState extends State<Home> {
                 ),
               ],
             )
-          : CircularProgressIndicator(),
+          : Center(child: CircularProgressIndicator()),
     );
   }
 }
