@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
@@ -10,6 +13,9 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   bool isLoggedIn = true;
+  double? _currentPositionLat;
+  double? _currentPositionLon;
+  MapController mapController = MapController();
 
   Future<void> isLogged() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -19,11 +25,68 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    _askForLocation();
     isLogged();
+  }
+
+  Future<void> _askForLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      permission = await Geolocator.requestPermission();
+    }
+    if (permission == LocationPermission.always ||
+        permission == LocationPermission.whileInUse) {
+      Geolocator.getPositionStream(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 5,
+        ),
+      ).listen((Position position) {
+        setState(() {
+          _currentPositionLat = position.latitude;
+          _currentPositionLon = position.longitude;
+        });
+        print("Lon Lat $_currentPositionLat $_currentPositionLon");
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: (_currentPositionLat != null && _currentPositionLon != null)
+          ? FlutterMap(
+              mapController: mapController,
+
+              options: MapOptions(
+                initialZoom: 15,
+                initialCenter: LatLng(
+                  _currentPositionLat!,
+                  _currentPositionLon!,
+                ),
+              ),
+              children: [
+                TileLayer(
+                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  userAgentPackageName: 'com.example.park_wise',
+                ),
+
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      point: LatLng(_currentPositionLat!, _currentPositionLon!),
+                      child: const Icon(
+                        Icons.location_on,
+                        size: 30,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            )
+          : CircularProgressIndicator(),
+    );
   }
 }
